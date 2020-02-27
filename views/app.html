@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>GetPics</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <div class="ml-sm-2">
+        <div>
+            <p class="h2">Getting pictures from my gmail.</p>
+            <p class="h5">Result will be downloaded as zip archive.</p>
+        </div>
+        <form action="javascript:void(null);" id="form" role="form">
+            <div class="form-group">
+                <b>Please fill all the parameters on the form:</b>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="subj_part">Part of subject</label>
+                    <input type="text" name="subj_part" class="form-control" id="subj_part" required />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="amount">Amount of pics to get</label>
+                    <input type="number" name="amount" class="form-control" min="0" max="1000" id="amount" required>
+                </div>
+            </div>
+            <div class="form-check" id="zipOrwatch" >
+                <input type="radio" name="action" class="form-check-input" value="watch" id="watch" checked>Wish you watch pics by browser?<Br>
+                <input type="radio" name="action" class="form-check-input" id="getzip" value="getzip">Or download as zip archive?<Br>
+            </div>
+            <br>
+            <div class="form-check">
+                <input type="checkbox" name="deleteMails" id="deleteMails" class="form-check-input" value="1" disabled="">Delete emails after pic getting or not?
+            </div>
+            <br>
+            <div class="form-check">
+                <input type="radio" name="type" class="form-check-input" value="read">Get pics from read emails?<Br>
+                <input type="radio" name="type" class="form-check-input" value="unread">Get pics from unread emails?<Br>
+                <input type="radio" name="type" class="form-check-input" value="all" checked>Get pics from all emails?<Br>
+            </div>
+            <br>
+        </form>
+        <div id="status">
+            <b>Server has result: </b><b id="hasResult"> </b>
+            <br>
+            <b>Server is busy:  </b><b id="isBusy"> </b>
+        </div>
+        <br>
+        <div id="result"></div>
+        <div class="row">
+            <div class="col-1">
+                <button type="button" class="btn btn-primary" id="getPicsButton">Run pics getting</button>
+            </div>
+            <div class="col-1">
+                <button type="button" class="btn btn-primary" id="getResultButton">Get result!</button>
+            </div>
+            <div class="col-1">
+                <button type="button" class="btn btn-primary" id="delResultButton">Delete result</button>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-1">
+                <button type="button" class="btn btn-primary" id="logoutButton">Logout</button>
+            </div>
+        </div>
+        </div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    $('#zipOrwatch').change( () => {
+        const deleteMailsCheckbox = $('#deleteMails');
+        if ($('#getzip').prop('checked') === false) {
+            deleteMailsCheckbox.prop('disabled', true);
+            deleteMailsCheckbox.prop('checked', false);
+        }
+        else{
+            deleteMailsCheckbox.prop('disabled', false);
+        }
+    });
+
+    $('#getPicsButton').click(() => {
+        $.post('/pictures', $("#form").serialize());
+        return false;
+    });
+
+    $('#getResultButton').click(() => {
+        window.open('/pictures');
+    });
+
+    $('#delResultButton').click(() => {
+        $.ajax({
+            url: '/pictures',
+            type: 'DELETE'
+        });
+        return false;
+    });
+
+    $('#logoutButton').click(() => {
+        window.location.replace('/logout');
+    });
+
+    function getStatus() {
+        $.get('/get_status', (status) => {
+
+            const hasResult = $('#hasResult');
+            const getResultButton = $('#getResultButton');
+            const isBusy = $('#isBusy');
+            const getPicsButton = $('#getPicsButton');
+            const getzip = $('#getzip');
+            const watch = $('#watch');
+            const delResultButton = $('#delResultButton');
+
+            if (status.hasResult) {
+                hasResult.text('Yes');
+                hasResult.css({ 'color': 'green' });
+                getResultButton.prop('disabled', false);
+                getPicsButton.prop('disabled', true);
+                getzip.prop('disabled', true);
+                watch.prop('disabled', true);
+            } else {
+                hasResult.text('No');
+                hasResult.css({ 'color': 'black' });
+                getResultButton.prop('disabled', true);
+                getPicsButton.prop('disabled', false);
+                getzip.prop('disabled', false);
+                watch.prop('disabled', false);
+            }
+            if (status.isBusy) {
+                isBusy.text('Yes');
+                isBusy.css({ 'color': 'red' });
+                getPicsButton.prop('disabled', true);
+                getzip.prop('disabled', true);
+                watch.prop('disabled', true);
+                delResultButton.prop('disabled', true);
+            } else {
+                isBusy.text('No');
+                isBusy.css({ 'color': 'green' });
+                delResultButton.prop('disabled', false);
+                if (!status.hasResult) {
+                    getPicsButton.prop('disabled', false);
+                    getzip.prop('disabled', false);
+                    watch.prop('disabled', false);
+                } 
+            }
+        });
+    };
+
+    setInterval(() => {
+            getStatus();
+        },
+        1000);
+</script>
+</body>
+</html>
