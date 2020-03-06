@@ -1,5 +1,5 @@
 # GetGmailPics
-I have a CCTV camera out my house, and the camera makes a picture when detect motion front of it. Then the cam send this picture as message to my Gmail. So, once I realised I have thousands photos whole the year and I can handle them, for example make movie.
+I have a CCTV camera out my house, and the camera makes a picture when detects motion front of it. Then the cam sends this picture as message to my Gmail. So, once I realised I have thousands photos whole the year and I can handle them, for example make movie.
 This web app allows me get pictures from my Gmail as webpage (up to 500 photos on one page) or as zip archive (up to 500 photos in one archive). Besides, the app allows get only matching with pattern messages.  
 It looks like:  
 ![GetGmailPicsUI](https://sun9-35.userapi.com/c858032/v858032030/198b7f/1bfaVz-FIR0.jpg)  
