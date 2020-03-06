@@ -11,4 +11,4 @@ And I can say, I accomplished my aims. Of course, there still are a lot of TODO 
 plenty of free time to develop it.  
 And besides, I'm happy with how it works :) It's not mature product, just stand for learning by creating some applied app.
 I'm going to develop it and learn new technologies in near future.  
-You can see login page here: [GetPicsApp](https://abashin.tk). If you want to look how it works, please contact me - abashin.d@gmail.com, and I'll send you login/pass for app. But you still will be able to get pics only from my gmail box :)
+You can see login page here: [GetPicsApp](https://abashin.tk). If you want to look how it works, please contact me - abashin.d@gmail.com, and I'll send you login/pass for the app. But you will still be able to get pics only from my gmail box :)
