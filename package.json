@@ -16,7 +16,7 @@
     "express-session": "^1.17.0",
     "googleapis": "^46.0.0",
     "js-base64": "^2.5.1",
-    "jszip": "^3.2.2",
+    "jszip": "^3.7.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "readline-sync": "^1.4.10",
